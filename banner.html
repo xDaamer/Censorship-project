@@ -1,0 +1,175 @@
+
+    <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+    <div class="textarea">
+        <label>Metin Girin</label>
+        <input type="text" id="text-input" placeholder="Metin Giriniz..." >
+    </div>
+    <p></p>
+    <input type="text" value="" id="myInput" placeholder="Çıktı..." >
+    <div class="row">
+        <input type="submit" value="Submit" onclick="run()">
+      </div>
+      <div class="tooltip">
+        <button id="copybtn" onclick="copy()"  onmouseout="outFunc()"><span class="tooltiptext" id="myTooltip">Copy to clipboard</span>Click For Copy</button>
+      </div>
+      
+</body>
+
+
+<style>
+   * {
+  box-sizing: border-box;
+}
+    input[type=text] {
+  width: 100%;
+  height:150px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+    }
+    label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -75px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+</style>
+<script>
+const wordList = [
+    /*Write Words Which You Want To Censor*/
+    /*Sansürlemek istediğiniz kelimeleri yazınız*/
+      "yanı",
+      "sıra",
+      "dördüncü",
+    
+];
+   
+function copy() {
+  var copyText = document.getElementById("myInput");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(copyText.value);
+  
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copied!";
+}
+
+class info {
+    constructor(text,typeofText,queue,wordlistQueue,index){
+      this.text = text;
+      this.typeofText = typeofText;
+      this.queue = queue;
+      this.wordlistQueue = wordlistQueue;
+      this.index = index;
+    }
+    
+  };
+function outFunc() {
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copy to clipboard";
+}
+function run(){
+  let input,check,list,listLength;
+  
+  input =  document.getElementById("text-input").value;
+  input = String(input).split(' ');
+  console.log(input);
+  listLength = wordList.length;
+  console.log("Wordlist Dizisinin Uzunuluğu : " + wordList.length + "\n" +  "Wordlist: " + wordList);
+
+  for(let i = wordList.length; 0<i; --i){
+   for(let f = input.length; -1<f; --f){
+     info.text = input[f];
+     info.typeofText = typeof input[f];
+     info.queue = f;
+     info.wordlistQueue = i;
+    //console.log(info.text,info.typeofText,info.queue,info.wordlistQueue);
+    console.log("Text: " + input[f] +"\n"+"Input type: " + typeof input[f] + "\n"+ "Sıra: " + f +"\n"+ "Wordlist Sırası: " + i);
+    check = String(input[f]).indexOf(wordList[i]);
+    info.index= String(input[f]).indexOf(wordList[i]);
+    //console.log(info.index);
+    console.log("ındexOf : " + check);
+    if(check== -1) { //IMP FIX info.index=check 
+    console.log("clear"  + "\n" + "--------------" + "\n");
+    }
+    else {
+      input[f] = "****"
+      console.log(input[f] + "\n" + "--------------" + "\n");
+      console.warn("INDEX CAUGHT")
+    }
+   }
+  }
+ let output = (input.join(" "));
+ console.log(output);
+ document.getElementById("myInput").value = output;
+}
+    
+    
+    </script>
